@@ -4,10 +4,11 @@ DROP TABLE IF EXISTS ACIDENTE;
 
 CREATE TABLE ACIDENTE (
     agente_causador_acidente TEXT,
-    data_acidente_referencia DATE,
+    data_acidente_referencia TEXT,
     cbo_codigo_descricao TEXT,
     cid_10 TEXT,
-    cnae_empregador TEXT,
+	cnae_empregador BIGINT,
+    cnae_empregador_descricao TEXT,
     municipio_empregador TEXT,
     natureza_lesao TEXT,
     parte_corpo_atingida TEXT,
