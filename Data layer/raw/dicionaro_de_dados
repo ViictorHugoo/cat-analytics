@@ -1,0 +1,20 @@
+| Coluna                    | Tipo     | Descrição                                                                 |
+|---------------------------|----------|---------------------------------------------------------------------------|
+| agente_causador_acidente  | TEXT     | Agente ou situação causadora do acidente ou da doença do trabalho.        |
+| data_acidente             | DATE     | Data da ocorrência do acidente.                                           |
+| cbo_id_descricao          | TEXT     | Código e descrição da Classificação Brasileira de Ocupações (CBO) correspondente à função exercida pelo trabalhador. |
+| cid_10                    | TEXT     | Código da Classificação Internacional de Doenças (CID-10).                |
+| cnae_empregador           | INTEGER  | Código da atividade econômica do empregador conforme CNAE 2.0.            |
+| cnae_empregador_descricao | TEXT     | Descrição do código da atividade econômica do empregador conforme CNAE 2.0. |
+| data_emissao_cat          | DATE     | Data da emissão da Comunicação de Acidente de Trabalho (CAT).             |
+| emitente_cat              | TEXT     | Emitente da Comunicação de Acidente de Trabalho (CAT).                    |
+| origem_cat                | TEXT     | Origem do cadastro da Comunicação de Acidente de Trabalho (CAT).          |
+| houve_obito               | BOOLEAN  | Indica se o acidente resultou em óbito.                                   |
+| municipio_empregador      | TEXT     | Município do empregador.                                                  |
+| natureza_lesao            | TEXT     | Classificação da natureza da lesão decorrente do acidente de trabalho.    |
+| parte_corpo_atingida      | TEXT     | Região do corpo afetada pelo acidente de trabalho.                        |
+| tipo_acidente             | TEXT     | Classificação do acidente em: Típico, Trajeto ou Doença.                  |
+| uf_municipio_acidente     | TEXT     | Estado onde ocorreu o acidente.                                           |
+| uf_municipio_empregador   | TEXT     | Estado do empregador.                                                     |
+| sexo                      | TEXT     | Sexo do trabalhador.                                                      |
+| data_nascimento           | DATE     | Data de nascimento do trabalhador.                                        |
