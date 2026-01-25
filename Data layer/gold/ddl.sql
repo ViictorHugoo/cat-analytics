@@ -89,22 +89,22 @@ CREATE TABLE gold.fat_act_trb (
     srk_fat BIGSERIAL PRIMARY KEY,
     chv_cat_org TEXT NOT NULL,
     
-    srk_tmp_act BIGINT REFERENCES gold.dim_tmp(srk_tmp),
-    srk_tmp_ems BIGINT REFERENCES gold.dim_tmp(srk_tmp),
-    srk_tmp_nsc BIGINT REFERENCES gold.dim_tmp(srk_tmp),
+    srk_tmp_act BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
+    srk_tmp_ems BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
+    srk_tmp_nsc BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
     
-    srk_trb BIGINT REFERENCES gold.dim_trb(srk_trb),
-    srk_cbo BIGINT REFERENCES gold.dim_cbo(srk_cbo),
-    srk_emp BIGINT REFERENCES gold.dim_emp(srk_emp),
-    srk_cne BIGINT REFERENCES gold.dim_cne(srk_cne),
+    srk_trb BIGSERIAL REFERENCES gold.dim_trb(srk_trb),
+    srk_cbo BIGSERIAL REFERENCES gold.dim_cbo(srk_cbo),
+    srk_emp BIGSERIAL REFERENCES gold.dim_emp(srk_emp),
+    srk_cne BIGSERIAL REFERENCES gold.dim_cne(srk_cne),
     
-    srk_mnc_act BIGINT REFERENCES gold.dim_mnc(srk_mnc),
-    srk_mnc_emp BIGINT REFERENCES gold.dim_mnc(srk_mnc),
+    srk_mnc_act BIGSERIAL REFERENCES gold.dim_mnc(srk_mnc),
+    srk_mnc_emp BIGSERIAL REFERENCES gold.dim_mnc(srk_mnc),
     
-    srk_tpo_act BIGINT REFERENCES gold.dim_tpo_act(srk_tpo_act),
-    srk_lso BIGINT REFERENCES gold.dim_lso(srk_lso),
-    srk_agt_cdr BIGINT REFERENCES gold.dim_agt_cdr(srk_agt_cdr),
-    srk_cid BIGINT REFERENCES gold.dim_cid(srk_cid),
+    srk_tpo_act BIGSERIAL REFERENCES gold.dim_tpo_act(srk_tpo_act),
+    srk_lso BIGSERIAL REFERENCES gold.dim_lso(srk_lso),
+    srk_agt_cdr BIGSERIAL REFERENCES gold.dim_agt_cdr(srk_agt_cdr),
+    srk_cid BIGSERIAL REFERENCES gold.dim_cid(srk_cid),
     
     idade_trabalhador INTEGER
 );
