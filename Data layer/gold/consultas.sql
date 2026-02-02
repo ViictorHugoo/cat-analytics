@@ -3,8 +3,8 @@ SELECT
     ag.descricao as agente_causador,
     COUNT(*) as total_acidentes,
     COUNT(DISTINCT f.srk_cne) as setores_afetados
-FROM gold.fat_act_trb f
-JOIN gold.dim_agt_cdr ag ON f.srk_agt_cdr = ag.srk_agt_cdr
+FROM dw.fat_act_trb f
+JOIN dw.dim_agt_cdr ag ON f.srk_agt_cdr = ag.srk_agt_cdr
 WHERE ag.descricao <> 'Não identificado'
 GROUP BY ag.descricao
 ORDER BY total_acidentes DESC
@@ -16,9 +16,9 @@ WITH acidentes_ocupacao AS (
         cbo.descricao as ocupacao,
         l.natureza_lesao,
         COUNT(*) as casos
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_cbo cbo ON f.srk_cbo = cbo.srk_cbo
-    JOIN gold.dim_lso l ON f.srk_lso = l.srk_lso
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_cbo cbo ON f.srk_cbo = cbo.srk_cbo
+    JOIN dw.dim_lso l ON f.srk_lso = l.srk_lso
     WHERE cbo.descricao <> 'Não identificado'
       AND l.natureza_lesao IS NOT NULL
     GROUP BY cbo.descricao, l.natureza_lesao
@@ -49,10 +49,10 @@ WITH tempo_emissao AS (
     SELECT 
         cne.descricao as setor,
         (t_ems.chv_tmp_org - t_act.chv_tmp_org) as dias_atraso
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_cne cne ON f.srk_cne = cne.srk_cne
-    JOIN gold.dim_tmp t_act ON f.srk_tmp_act = t_act.srk_tmp
-    JOIN gold.dim_tmp t_ems ON f.srk_tmp_ems = t_ems.srk_tmp
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_cne cne ON f.srk_cne = cne.srk_cne
+    JOIN dw.dim_tmp t_act ON f.srk_tmp_act = t_act.srk_tmp
+    JOIN dw.dim_tmp t_ems ON f.srk_tmp_ems = t_ems.srk_tmp
     WHERE t_ems.chv_tmp_org >= t_act.chv_tmp_org
 )
 SELECT 
@@ -73,8 +73,8 @@ WITH acidentes_mes AS (
         t.mes,
         t.nome_mes,
         COUNT(*) as total_acidentes
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_tmp t ON f.srk_tmp_act = t.srk_tmp
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_tmp t ON f.srk_tmp_act = t.srk_tmp
     GROUP BY t.mes, t.nome_mes
 )
 SELECT 
@@ -92,9 +92,9 @@ WITH combinacoes AS (
         ag.descricao as agente,
         l.parte_corpo_atingida,
         COUNT(*) as casos
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_agt_cdr ag ON f.srk_agt_cdr = ag.srk_agt_cdr
-    JOIN gold.dim_lso l ON f.srk_lso = l.srk_lso
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_agt_cdr ag ON f.srk_agt_cdr = ag.srk_agt_cdr
+    JOIN dw.dim_lso l ON f.srk_lso = l.srk_lso
     WHERE ag.descricao IS NOT NULL 
       AND l.parte_corpo_atingida IS NOT NULL
     GROUP BY ag.descricao, l.parte_corpo_atingida
@@ -123,9 +123,9 @@ WITH cid_ocupacao AS (
         cid.descricao as diagnostico,
         cbo.descricao as ocupacao,
         COUNT(*) as casos
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_cid cid ON f.srk_cid = cid.srk_cid
-    JOIN gold.dim_cbo cbo ON f.srk_cbo = cbo.srk_cbo
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_cid cid ON f.srk_cid = cid.srk_cid
+    JOIN dw.dim_cbo cbo ON f.srk_cbo = cbo.srk_cbo
     WHERE cid.descricao IS NOT NULL
     GROUP BY cid.descricao, cbo.descricao
 ),
@@ -151,8 +151,8 @@ SELECT
     COUNT(*) as total_acidentes,
     COUNT(DISTINCT f.srk_emp) as empresas_distintas,
     RANK() OVER (ORDER BY COUNT(*) DESC) as ranking_brasil
-FROM gold.fat_act_trb f
-JOIN gold.dim_mnc m ON f.srk_mnc_act = m.srk_mnc
+FROM dw.fat_act_trb f
+JOIN dw.dim_mnc m ON f.srk_mnc_act = m.srk_mnc
 WHERE m.uf <> 'Não identificado'
 GROUP BY m.uf
 ORDER BY total_acidentes DESC;
@@ -165,10 +165,10 @@ WITH acidentes_empresa AS (
         COUNT(*) as total_cats,
         COUNT(DISTINCT f.srk_trb) as trabalhadores_distintos,
         COUNT(DISTINCT DATE_TRUNC('month', t.chv_tmp_org)) as meses_com_acidentes
-    FROM gold.fat_act_trb f
-    JOIN gold.dim_emp e ON f.srk_emp = e.srk_emp
-    JOIN gold.dim_cne cne ON e.srk_cne = cne.srk_cne
-    JOIN gold.dim_tmp t ON f.srk_tmp_act = t.srk_tmp
+    FROM dw.fat_act_trb f
+    JOIN dw.dim_emp e ON f.srk_emp = e.srk_emp
+    JOIN dw.dim_cne cne ON e.srk_cne = cne.srk_cne
+    JOIN dw.dim_tmp t ON f.srk_tmp_act = t.srk_tmp
     GROUP BY e.srk_emp, cne.descricao
 )
 SELECT 
@@ -187,16 +187,16 @@ LIMIT 100;
 WITH faixas AS (
     SELECT 
         CASE 
-            WHEN f.idade_trabalhador < 18 THEN 'Menor de 18'
-            WHEN f.idade_trabalhador BETWEEN 18 AND 24 THEN '18-24'
-            WHEN f.idade_trabalhador BETWEEN 25 AND 34 THEN '25-34'
-            WHEN f.idade_trabalhador BETWEEN 35 AND 44 THEN '35-44'
-            WHEN f.idade_trabalhador BETWEEN 45 AND 54 THEN '45-54'
-            WHEN f.idade_trabalhador >= 55 THEN '55+'
+            WHEN f.ide_trb < 18 THEN 'Menor de 18'
+            WHEN f.ide_trb BETWEEN 18 AND 24 THEN '18-24'
+            WHEN f.ide_trb BETWEEN 25 AND 34 THEN '25-34'
+            WHEN f.ide_trb BETWEEN 35 AND 44 THEN '35-44'
+            WHEN f.ide_trb BETWEEN 45 AND 54 THEN '45-54'
+            WHEN f.ide_trb >= 55 THEN '55+'
         END as faixa_etaria,
         COUNT(*) as total_acidentes
-    FROM gold.fat_act_trb f
-    WHERE f.idade_trabalhador IS NOT NULL
+    FROM dw.fat_act_trb f
+    WHERE f.ide_trb IS NOT NULL
     GROUP BY faixa_etaria
 )
 SELECT 
@@ -220,12 +220,12 @@ ORDER BY
 SELECT 
     tp.descricao as tipo_acidente,
     COUNT(*) as total_casos,
-    ROUND(AVG(f.idade_trabalhador), 1) as idade_media,
+    ROUND(AVG(f.ide_trb), 1) as idade_media,
     COUNT(DISTINCT f.srk_cbo) as ocupacoes_afetadas,
     COUNT(DISTINCT f.srk_cne) as setores_afetados,
     ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 1) as percentual
-FROM gold.fat_act_trb f
-JOIN gold.dim_tpo_act tp ON f.srk_tpo_act = tp.srk_tpo_act
+FROM dw.fat_act_trb f
+JOIN dw.dim_tpo_act tp ON f.srk_tpo_act = tp.srk_tpo_act
 WHERE tp.descricao IS NOT NULL
 GROUP BY tp.descricao
 ORDER BY total_casos DESC;

@@ -1,7 +1,7 @@
-CREATE SCHEMA IF NOT EXISTS gold;
+CREATE SCHEMA IF NOT EXISTS dw;
 
-DROP TABLE IF EXISTS gold.dim_tmp CASCADE;
-CREATE TABLE gold.dim_tmp (
+DROP TABLE IF EXISTS dw.dim_tmp CASCADE;
+CREATE TABLE dw.dim_tmp (
     srk_tmp BIGSERIAL PRIMARY KEY,
     chv_tmp_org DATE NOT NULL UNIQUE,
     dia INTEGER,
@@ -13,62 +13,62 @@ CREATE TABLE gold.dim_tmp (
     is_fim_semana BOOLEAN
 );
 
-DROP TABLE IF EXISTS gold.dim_cbo CASCADE;
-CREATE TABLE gold.dim_cbo (
+DROP TABLE IF EXISTS dw.dim_cbo CASCADE;
+CREATE TABLE dw.dim_cbo (
     srk_cbo BIGSERIAL PRIMARY KEY,
     chv_cbo_org TEXT NOT NULL UNIQUE,
     codigo TEXT,
     descricao TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_mnc CASCADE;
-CREATE TABLE gold.dim_mnc (
+DROP TABLE IF EXISTS dw.dim_mnc CASCADE;
+CREATE TABLE dw.dim_mnc (
     srk_mnc BIGSERIAL PRIMARY KEY,
     chv_mnc_org TEXT NOT NULL UNIQUE,
     nome TEXT,
     uf TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_cne CASCADE;
-CREATE TABLE gold.dim_cne (
+DROP TABLE IF EXISTS dw.dim_cne CASCADE;
+CREATE TABLE dw.dim_cne (
     srk_cne BIGSERIAL PRIMARY KEY,
     chv_cne_org BIGINT NOT NULL UNIQUE,
     codigo BIGINT,
     descricao TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_tpo_act CASCADE;
-CREATE TABLE gold.dim_tpo_act (
+DROP TABLE IF EXISTS dw.dim_tpo_act CASCADE;
+CREATE TABLE dw.dim_tpo_act (
     srk_tpo_act BIGSERIAL PRIMARY KEY,
     chv_tpo_act_org TEXT NOT NULL UNIQUE,
     descricao TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_lso CASCADE;
-CREATE TABLE gold.dim_lso (
+DROP TABLE IF EXISTS dw.dim_lso CASCADE;
+CREATE TABLE dw.dim_lso (
     srk_lso BIGSERIAL PRIMARY KEY,
     chv_lso_org TEXT NOT NULL UNIQUE,
     natureza_lesao TEXT,
     parte_corpo_atingida TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_agt_cdr CASCADE;
-CREATE TABLE gold.dim_agt_cdr (
+DROP TABLE IF EXISTS dw.dim_agt_cdr CASCADE;
+CREATE TABLE dw.dim_agt_cdr (
     srk_agt_cdr BIGSERIAL PRIMARY KEY,
     chv_agt_cdr_org TEXT NOT NULL UNIQUE,
     descricao TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_cid CASCADE;
-CREATE TABLE gold.dim_cid (
+DROP TABLE IF EXISTS dw.dim_cid CASCADE;
+CREATE TABLE dw.dim_cid (
     srk_cid BIGSERIAL PRIMARY KEY,
     chv_cid_org TEXT NOT NULL UNIQUE,
     codigo TEXT,
     descricao TEXT
 );
 
-DROP TABLE IF EXISTS gold.dim_trb CASCADE;
-CREATE TABLE gold.dim_trb (
+DROP TABLE IF EXISTS dw.dim_trb CASCADE;
+CREATE TABLE dw.dim_trb (
     srk_trb BIGSERIAL PRIMARY KEY,
     chv_trb_org TEXT NOT NULL UNIQUE,
     sexo TEXT,
@@ -76,35 +76,35 @@ CREATE TABLE gold.dim_trb (
     srk_tmp_nsc DATE
 );
 
-DROP TABLE IF EXISTS gold.dim_emp CASCADE;
-CREATE TABLE gold.dim_emp (
+DROP TABLE IF EXISTS dw.dim_emp CASCADE;
+CREATE TABLE dw.dim_emp (
     srk_emp BIGSERIAL PRIMARY KEY,
     chv_emp_org TEXT NOT NULL UNIQUE,
     srk_cne BIGINT,
     srk_mnc TEXT
 );
 
-DROP TABLE IF EXISTS gold.fat_act_trb CASCADE;
-CREATE TABLE gold.fat_act_trb (
+DROP TABLE IF EXISTS dw.fat_act_trb CASCADE;
+CREATE TABLE dw.fat_act_trb (
     srk_fat BIGSERIAL PRIMARY KEY,
     chv_cat_org TEXT NOT NULL,
     
-    srk_tmp_act BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
-    srk_tmp_ems BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
-    srk_tmp_nsc BIGSERIAL REFERENCES gold.dim_tmp(srk_tmp),
+    srk_tmp_act BIGSERIAL REFERENCES dw.dim_tmp(srk_tmp),
+    srk_tmp_ems BIGSERIAL REFERENCES dw.dim_tmp(srk_tmp),
+    srk_tmp_nsc BIGSERIAL REFERENCES dw.dim_tmp(srk_tmp),
     
-    srk_trb BIGSERIAL REFERENCES gold.dim_trb(srk_trb),
-    srk_cbo BIGSERIAL REFERENCES gold.dim_cbo(srk_cbo),
-    srk_emp BIGSERIAL REFERENCES gold.dim_emp(srk_emp),
-    srk_cne BIGSERIAL REFERENCES gold.dim_cne(srk_cne),
+    srk_trb BIGSERIAL REFERENCES dw.dim_trb(srk_trb),
+    srk_cbo BIGSERIAL REFERENCES dw.dim_cbo(srk_cbo),
+    srk_emp BIGSERIAL REFERENCES dw.dim_emp(srk_emp),
+    srk_cne BIGSERIAL REFERENCES dw.dim_cne(srk_cne),
     
-    srk_mnc_act BIGSERIAL REFERENCES gold.dim_mnc(srk_mnc),
-    srk_mnc_emp BIGSERIAL REFERENCES gold.dim_mnc(srk_mnc),
+    srk_mnc_act BIGSERIAL REFERENCES dw.dim_mnc(srk_mnc),
+    srk_mnc_emp BIGSERIAL REFERENCES dw.dim_mnc(srk_mnc),
     
-    srk_tpo_act BIGSERIAL REFERENCES gold.dim_tpo_act(srk_tpo_act),
-    srk_lso BIGSERIAL REFERENCES gold.dim_lso(srk_lso),
-    srk_agt_cdr BIGSERIAL REFERENCES gold.dim_agt_cdr(srk_agt_cdr),
-    srk_cid BIGSERIAL REFERENCES gold.dim_cid(srk_cid),
+    srk_tpo_act BIGSERIAL REFERENCES dw.dim_tpo_act(srk_tpo_act),
+    srk_lso BIGSERIAL REFERENCES dw.dim_lso(srk_lso),
+    srk_agt_cdr BIGSERIAL REFERENCES dw.dim_agt_cdr(srk_agt_cdr),
+    srk_cid BIGSERIAL REFERENCES dw.dim_cid(srk_cid),
     
-    idade_trabalhador INTEGER
+    ide_trb INTEGER
 );
